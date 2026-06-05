@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVP RUN — запуск и развитие B2B-продаж</title>
+  <meta name="description" content="MVP RUN помогает B2B-компаниям запускать, настраивать и усиливать продажи: от проверки спроса и первых клиентов до ABM-pipeline для зрелых sales-команд." />
+  <style>
+    :root {
+      --bg: #07101f;
+      --bg2: #0b1426;
+      --panel: rgba(255,255,255,.055);
+      --panel2: rgba(255,255,255,.085);
+      --line: rgba(255,255,255,.12);
+      --text: #f6f7fb;
+      --muted: #aeb8c8;
+      --muted2: #7f8ca3;
+      --accent: #f4a51c;
+      --accent2: #ffd88a;
+      --green: #57d68d;
+      --red: #ff7c7c;
+      --radius: 28px;
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+      --max: 1180px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 5%, rgba(244,165,28,.22), transparent 26%),
+        radial-gradient(circle at 90% 12%, rgba(74,122,255,.20), transparent 24%),
+        radial-gradient(circle at 60% 70%, rgba(244,165,28,.10), transparent 30%),
+        var(--bg);
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, #000, transparent 80%);
+      z-index: -2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; }
+
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .small { color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      border: 1px solid rgba(244,165,28,.32);
+      background: rgba(244,165,28,.08);
+      color: var(--accent2);
+      padding: 9px 13px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); }
+
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(20px);
+      background: rgba(7,16,31,.72);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner {
+      height: 74px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .07em; }
+    .brand-mark {
+      width: 40px; height: 40px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(244,165,28,.95), rgba(244,165,28,.28));
+      display: grid; place-items: center;
+      color: #07101f;
+      box-shadow: 0 12px 40px rgba(244,165,28,.28);
+      font-weight: 950;
+    }
+    .brand span:last-child { color: var(--accent); }
+    .nav-links { display: flex; gap: 22px; align-items: center; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      border: 1px solid transparent;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #10131d;
+      background: linear-gradient(135deg, #ffd88a, var(--accent));
+      box-shadow: 0 18px 50px rgba(244,165,28,.22);
+    }
+    .btn-secondary {
+      color: var(--text);
+      border-color: rgba(255,255,255,.16);
+      background: rgba(255,255,255,.055);
+    }
+    .btn-small { padding: 10px 14px; font-size: 13px; }
+
+    .hero { padding: 82px 0 40px; }
+    .hero-grid { display: grid; grid-template-columns: 1.06fr .94fr; gap: 42px; align-items: center; }
+    h1 {
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .96;
+      margin: 22px 0 22px;
+      letter-spacing: -.06em;
+      max-width: 850px;
+    }
+    .grad { color: var(--accent); }
+    .lead {
+      font-size: clamp(18px, 2.2vw, 23px);
+      color: #dbe2ef;
+      max-width: 670px;
+      line-height: 1.35;
+      margin-bottom: 28px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 28px 0 30px; }
+    .trust-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .hero-card {
+      position: relative;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hero-card::before {
+      content: ""; position: absolute; inset: -80px -120px auto auto;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: rgba(244,165,28,.28); filter: blur(30px);
+    }
+    .pipeline {
+      position: relative; z-index: 2;
+      display: grid; gap: 14px;
+    }
+    .pipeline-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .status { color: var(--green); font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 18px var(--green); }
+    .stage-card {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(4,10,21,.45);
+      border-radius: 22px;
+      padding: 18px;
+      display: grid; grid-template-columns: 38px 1fr auto; gap: 14px; align-items: center;
+    }
+    .stage-card:nth-child(3) { margin-left: 28px; }
+    .stage-card:nth-child(4) { margin-left: 56px; border-color: rgba(244,165,28,.22); }
+    .stage-card:nth-child(5) { margin-left: 84px; }
+    .num {
+      width: 38px; height: 38px; border-radius: 13px;
+      display: grid; place-items: center;
+      background: rgba(244,165,28,.13); color: var(--accent); font-weight: 900;
+    }
+    .stage-card b { display: block; margin-bottom: 4px; }
+    .stage-card small { color: var(--muted); }
+    .tag { color: var(--accent2); font-size: 12px; font-weight: 800; border: 1px solid rgba(244,165,28,.26); padding: 7px 10px; border-radius: 999px; }
+    .mini-dashboard {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .metric {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
+      padding: 16px;
+    }
+    .metric strong { font-size: 25px; display: block; letter-spacing: -.04em; }
+    .metric span { color: var(--muted); font-size: 12px; }
+
+    section { padding: 76px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 30px; }
+    h2 { font-size: clamp(32px, 4.4vw, 54px); line-height: 1.02; letter-spacing: -.045em; margin: 0; max-width: 780px; }
+    .section-head p { max-width: 430px; color: var(--muted); font-size: 17px; }
+
+    .pain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card {
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.04));
+      border-radius: var(--radius);
+      padding: 24px;
+      min-height: 190px;
+    }
+    .card h3 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.03em; }
+    .card p, .card li { color: var(--muted); font-size: 15px; }
+    .icon {
+      width: 42px; height: 42px; border-radius: 16px;
+      display: grid; place-items: center;
+      background: rgba(244,165,28,.12);
+      color: var(--accent);
+      margin-bottom: 18px;
+      font-weight: 900;
+    }
+
+    .models { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .model-card { position: relative; overflow: hidden; }
+    .model-card::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .65;
+    }
+    .model-card .label { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+    .model-card h3 { min-height: 54px; }
+    .model-card ul { padding-left: 18px; margin: 18px 0 0; display: grid; gap: 8px; }
+
+    .split { display: grid; grid-template-columns: .82fr 1.18fr; gap: 20px; align-items: stretch; }
+    .big-panel {
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+      border-radius: 34px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .steps { display: grid; gap: 12px; }
+    .step {
+      display: grid; grid-template-columns: 44px 1fr; gap: 15px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(0,0,0,.16);
+      border-radius: 20px;
+      padding: 16px;
+    }
+    .step span { width: 44px; height: 44px; border-radius: 16px; background: rgba(244,165,28,.13); display: grid; place-items: center; color: var(--accent); font-weight: 900; }
+    .step b { display: block; margin-bottom: 4px; }
+    .step p { color: var(--muted); font-size: 14px; }
+
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .product {
+      min-height: 320px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.055);
+      border-radius: 32px;
+      padding: 28px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .product::before { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(244,165,28,.12); right: -80px; top: -80px; filter: blur(2px); }
+    .product .top { position: relative; z-index: 2; }
+    .product h3 { font-size: 30px; line-height: 1.05; letter-spacing: -.04em; margin: 12px 0 10px; }
+    .price { display: inline-flex; padding: 8px 12px; border-radius: 999px; color: var(--accent2); background: rgba(244,165,28,.10); border: 1px solid rgba(244,165,28,.20); font-weight: 800; font-size: 13px; }
+    .product-list { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; position: relative; z-index: 2; }
+    .product-list li { display: flex; gap: 9px; color: var(--muted); font-size: 15px; }
+    .product-list li::before { content: "✓"; color: var(--accent); font-weight: 900; }
+
+    .kit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .kit-card { min-height: 170px; }
+
+    .calculator { display: grid; grid-template-columns: .9fr 1.1fr; gap: 20px; }
+    .calc-form { display: grid; gap: 16px; }
+    .field label { display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; margin-bottom: 9px; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .calc-result { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .result-box { padding: 20px; border-radius: 24px; background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.09); }
+    .result-box strong { font-size: 32px; letter-spacing: -.05em; display: block; }
+    .result-box span { color: var(--muted); font-size: 13px; }
+
+    .proof-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .case-card { min-height: 240px; }
+    .case-card .big { font-size: 44px; font-weight: 900; color: var(--accent); letter-spacing: -.06em; margin-bottom: 8px; }
+
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    details {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.055);
+      border-radius: 22px;
+      padding: 18px 20px;
+    }
+    summary { cursor: pointer; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 20px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent); font-size: 24px; line-height: 1; }
+    details[open] summary::after { content: "−"; }
+    details p { color: var(--muted); margin-top: 12px; font-size: 15px; }
+
+    .cta { padding-bottom: 90px; }
+    .cta-box {
+      display: grid; grid-template-columns: 1fr .78fr; gap: 28px;
+      border: 1px solid rgba(244,165,28,.22);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(244,165,28,.28), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.045));
+      border-radius: 40px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+    .form { display: grid; gap: 12px; }
+    .form input, .form select, .form textarea {
+      width: 100%;
+      background: rgba(6,12,24,.65);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 14px 15px;
+      font: inherit;
+      outline: none;
+    }
+    .form textarea { min-height: 88px; resize: vertical; }
+    .form input:focus, .form select:focus, .form textarea:focus { border-color: rgba(244,165,28,.52); box-shadow: 0 0 0 3px rgba(244,165,28,.10); }
+    .fine { color: var(--muted2); font-size: 12px; }
+
+    footer { border-top: 1px solid rgba(255,255,255,.08); padding: 28px 0; color: var(--muted2); font-size: 13px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1060px) {
+      .hero-grid, .split, .calculator, .cta-box { grid-template-columns: 1fr; }
+      .hero-card { min-height: auto; }
+      .pain-grid, .models { grid-template-columns: repeat(2, 1fr); }
+      .nav-links a:not(.btn) { display: none; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+    }
+    @media (max-width: 720px) {
+      .container { width: min(100% - 28px, var(--max)); }
+      .hero { padding-top: 54px; }
+      .hero-card { min-height: auto; padding-bottom: 22px; }
+      .stage-card, .stage-card:nth-child(3), .stage-card:nth-child(4), .stage-card:nth-child(5) { margin-left: 0; grid-template-columns: 38px 1fr; }
+      .stage-card .tag { grid-column: 2; width: max-content; }
+      .mini-dashboard { grid-template-columns: 1fr; }
+      .pain-grid, .models, .product-grid, .kit-grid, .proof-grid, .faq, .calc-result { grid-template-columns: 1fr; }
+      .nav-inner { height: 64px; }
+      .nav .btn { display: none; }
+      section { padding: 56px 0; }
+      .cta-box, .big-panel { padding: 22px; border-radius: 28px; }
+    }
+  </style>
+  <!-- Updated: fixed hero overlap, ICP naming, and base + pipeline wording -->
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="MVP RUN">
+        <div class="brand-mark">R</div>
+        <div>MVP <span>RUN</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="#models">Модели</a>
+        <a href="#process">Процесс</a>
+        <a href="#products">Форматы</a>
+        <a href="#proof">Результат</a>
+        <a class="btn btn-primary btn-small" href="#contact">Обсудить запуск</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow"><span class="dot"></span> B2B sales launch & growth</div>
+          <h1>Запускаем и усиливаем B2B-продажи — <span class="grad">от гипотезы до pipeline</span></h1>
+          <p class="lead">MVP RUN помогает B2B-компаниям проверить спрос, собрать коммерческую систему, запустить outreach и довести лидов до согласованной стадии: pilot interest, MQL, SAL или SQL.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Определить вашу модель запуска →</a>
+            <a class="btn btn-secondary" href="#models">Посмотреть 4 сценария</a>
+          </div>
+          <div class="trust-row" aria-label="Ключевые отличия">
+            <span class="pill">✓ Не просто рассылки</span>
+            <span class="pill">✓ ICP, оффер, Kit и Playbook</span>
+            <span class="pill">✓ Фиксированный запуск + optional retainer</span>
+          </div>
+        </div>
+
+        <div class="hero-card reveal" aria-label="Визуализация pipeline">
+          <div class="pipeline">
+            <div class="pipeline-top">
+              <div class="small">Pipeline Launch System</div>
+              <div class="status"><span class="pulse"></span> в работе</div>
+            </div>
+            <div class="stage-card">
+              <div class="num">01</div>
+              <div><b>Стратегия</b><small>ICP, боли, оффер, критерии успеха</small></div>
+              <div class="tag">fit</div>
+            </div>
+            <div class="stage-card">
+              <div class="num">02</div>
+              <div><b>Упаковка</b><small>Sales Kit, письма, кейсы, ROI</small></div>
+              <div class="tag">ready</div>
+            </div>
+            <div class="stage-card">
+              <div class="num">03</div>
+              <div><b>Outreach</b><small>база аккаунтов, каналы, цепочки касаний</small></div>
+              <div class="tag">run</div>
+            </div>
+            <div class="stage-card">
+              <div class="num">04</div>
+              <div><b>Передача</b><small>Nurture / MQL / SAL / SQL</small></div>
+              <div class="tag">handoff</div>
+            </div>
+          </div>
+          <div class="mini-dashboard">
+            <div class="metric"><strong>2–3 мес.</strong><span>на сборку и запуск</span></div>
+            <div class="metric"><strong>4 ICP</strong><span>под разные стадии</span></div>
+            <div class="metric"><strong>1 система</strong><span>для продолжения продаж</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Лидген не работает одинаково для всех</h2>
+          <p>Одной компании нужно проверить спрос. Другой — выгрузить знания фаундера в Sales Kit. Третьей — донастроить воронку. Зрелой sales-команде нужен дополнительный ABM-pipeline.</p>
+        </div>
+        <div class="pain-grid">
+          <div class="card reveal"><div class="icon">0</div><h3>Pre-sales / MVP-стадия</h3><p>Есть прототип, но непонятно, кто реально готов платить и какой оффер продавать первым.</p></div>
+          <div class="card reveal"><div class="icon">1</div><h3>Founder-led sales</h3><p>Выручка держится на собственнике, а логика продаж не упакована в процесс и материалы.</p></div>
+          <div class="card reveal"><div class="icon">2</div><h3>Early sales team</h3><p>Есть сейлзы и первые сделки, но воронка неровная, прогнозы слабые, ICP размыт.</p></div>
+          <div class="card reveal"><div class="icon">3</div><h3>Mature sales team</h3><p>Команда есть, но нужен качественный поток целевых аккаунтов и более точный ABM-outreach.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="models">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>4 модели работы под стадию коммерческой зрелости</h2>
+          <p>Мы не начинаем с «дайте базу и тексты». Сначала определяем, какую систему нужно собрать, настроить или масштабировать.</p>
+        </div>
+        <div class="models">
+          <div class="card model-card reveal">
+            <div class="label">ICP 0</div><h3>Проверка спроса через первые продажи</h3><p>Для MVP / прототипа без продаж.</p>
+            <ul><li>Discovery + sales call</li><li>Paid pilot / early access</li><li>Sell / Refine / Pivot / Stop</li></ul>
+          </div>
+          <div class="card model-card reveal">
+            <div class="label">ICP 1</div><h3>Запуск продаж под ключ</h3><p>Для компаний, где продажи держатся на фаундере.</p>
+            <ul><li>ICP и оффер</li><li>Sales / Marketing Kit</li><li>Первые лиды в pipeline</li></ul>
+          </div>
+          <div class="card model-card reveal">
+            <div class="label">ICP 2</div><h3>Систематизация и ускорение продаж</h3><p>Для команд с первыми сейлзами и нестабильной воронкой.</p>
+            <ul><li>Аудит CRM и сделок</li><li>Доработка Kit</li><li>Handoff в sales</li></ul>
+          </div>
+          <div class="card model-card reveal">
+            <div class="label">ICP 3</div><h3>ABM-усиление продаж</h3><p>Для зрелых B2B-команд с CRM и коммерческим отделом.</p>
+            <ul><li>Account Universe</li><li>Tiering и buying committee</li><li>ABM-pipeline</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container split">
+        <div class="big-panel reveal">
+          <div class="eyebrow"><span class="dot"></span> Как устроен процесс</div>
+          <h2 style="margin-top:18px">Сначала собираем систему, потом запускаем поле</h2>
+          <p class="small" style="margin-top:18px">В ранних стадиях MVP RUN берёт на себя большую часть подготовки: исследования, оффер, материалы, базы, outreach и первые цели. В зрелых стадиях подключаемся к уже работающей системе и усиливаем pipeline.</p>
+        </div>
+        <div class="steps reveal">
+          <div class="step"><span>1</span><div><b>Рамка проекта</b><p>Определяем ICP, стадию клиента, цель проекта, критерии успеха и точку передачи лида.</p></div></div>
+          <div class="step"><span>2</span><div><b>Продуктово-рыночная рамка</b><p>Интервью, аудит, боли, задачи, USP / UVP, экономика и аргументация для клиента.</p></div></div>
+          <div class="step"><span>3</span><div><b>Sales / Marketing Kit</b><p>Упаковываем смыслы в one-pager, презентацию, кейсы, лендинг, письма и ROI-калькулятор.</p></div></div>
+          <div class="step"><span>4</span><div><b>Sales / ABM Playbook</b><p>Описываем каналы, базы, сценарии касаний, квалификацию, возражения и handoff SLA.</p></div></div>
+          <div class="step"><span>5</span><div><b>Запуск и оптимизация</b><p>Выходим в поле, считаем ответы, встречи, MQL / SAL / SQL и обновляем гипотезы.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Финансовая модель: отдельно запуск системы и отдельно ведение pipeline</h2>
+          <p>Так подготовительная работа не маскируется под «лидоген»: она продаётся как отдельный проект с понятным результатом.</p>
+        </div>
+        <div class="product-grid">
+          <div class="product reveal">
+            <div class="top">
+              <div class="price">Фикс за проект · 2–3 месяца</div>
+              <h3>Pipeline Launch</h3>
+              <p class="small">Собираем стратегию, материалы, базы и запускаем outreach до первых согласованных KPI.</p>
+            </div>
+            <ul class="product-list">
+              <li>Для ICP 0 / ICP 1, частично ICP 2</li>
+              <li>Цель: система + первые лиды</li>
+              <li>На выходе: Kit, Playbook, база аккаунтов + лиды / сделки в pipeline</li>
+              <li>После проекта можно продолжить самостоятельно или с MVP RUN</li>
+            </ul>
+          </div>
+          <div class="product reveal">
+            <div class="top">
+              <div class="price">Setup + monthly + success fee</div>
+              <h3>Pipeline Management</h3>
+              <p class="small">Продолжаем вести outreach, обновлять базы, тестировать гипотезы и передавать лидов в sales.</p>
+            </div>
+            <ul class="product-list">
+              <li>Для ICP 2 после sprint и для ICP 3 сразу после setup</li>
+              <li>Цель: регулярное пополнение pipeline</li>
+              <li>Оплата: ежемесячный фикс + лиды на нужной стадии</li>
+              <li>Отчётность: аккаунты, касания, встречи, MQL / SAL / SQL</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Что именно получает клиент</h2>
+          <p>Не просто базу контактов, а коммерческий актив: материалы, правила работы, база аккаунтов и лиды / сделки, которые можно дальше вести внутри команды.</p>
+        </div>
+        <div class="kit-grid">
+          <div class="card kit-card reveal"><div class="icon">S</div><h3>Стратегия</h3><p>ICP, сегменты, карта потребностей, оффер, аргументы, экономика и критерии лида.</p></div>
+          <div class="card kit-card reveal"><div class="icon">K</div><h3>Sales Kit</h3><p>Презентация, кейсы, one-pager, лендинг, письма, скрипты и FAQ по возражениям.</p></div>
+          <div class="card kit-card reveal"><div class="icon">P</div><h3>Playbook</h3><p>Каналы, базы, этапы воронки, handoff SLA, сценарии касаний и правила передачи.</p></div>
+          <div class="card kit-card reveal"><div class="icon">B</div><h3>База + pipeline</h3><p>Account universe, контакты, приоритеты и статусы — плюс лиды, пилоты или сделки, доведённые до согласованной стадии.</p></div>
+          <div class="card kit-card reveal"><div class="icon">R</div><h3>ROI</h3><p>Расчёт экономической эффективности для усиления аргументации перед клиентом.</p></div>
+          <div class="card kit-card reveal"><div class="icon">D</div><h3>Dashboard</h3><p>Понятная отчётность по касаниям, ответам, встречам, лидам и следующим шагам.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container calculator">
+        <div class="big-panel reveal">
+          <div class="eyebrow"><span class="dot"></span> ROI-preview</div>
+          <h2 style="margin-top:18px">Оцените потенциал pipeline</h2>
+          <p class="small" style="margin-top:16px">Мини-калькулятор показывает не обещание результата, а пример того, как можно считать экономику проекта до запуска.</p>
+          <div class="calc-form" style="margin-top:26px">
+            <div class="field">
+              <label><span>Средний чек сделки</span><b id="dealVal">1 500 000 ₽</b></label>
+              <input id="deal" type="range" min="300000" max="8000000" step="100000" value="1500000" />
+            </div>
+            <div class="field">
+              <label><span>Лидов до стадии SAL / SQL</span><b id="leadVal">6</b></label>
+              <input id="leads" type="range" min="1" max="30" step="1" value="6" />
+            </div>
+            <div class="field">
+              <label><span>Конверсия в сделку</span><b id="convVal">20%</b></label>
+              <input id="conv" type="range" min="5" max="60" step="1" value="20" />
+            </div>
+          </div>
+        </div>
+        <div class="big-panel reveal">
+          <h3 style="font-size:30px;margin:0 0 18px;letter-spacing:-.04em">Примерная экономика</h3>
+          <div class="calc-result">
+            <div class="result-box"><strong id="pipelineRes">9 млн ₽</strong><span>потенциальный pipeline</span></div>
+            <div class="result-box"><strong id="revenueRes">1.8 млн ₽</strong><span>ожидаемая выручка</span></div>
+            <div class="result-box"><strong id="dealsRes">1.2</strong><span>ожидаемых сделок</span></div>
+            <div class="result-box"><strong id="stageRes">SAL / SQL</strong><span>целевая стадия передачи</span></div>
+          </div>
+          <p class="small" style="margin-top:18px">Фактическая модель считается отдельно под чек, цикл сделки, маржинальность, стоимость лида и точку передачи.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="proof">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Как мы доказываем результат</h2>
+          <p>Вместо отчётов «сколько писем отправили» показываем движение по pipeline и качество следующих шагов.</p>
+        </div>
+        <div class="proof-grid">
+          <div class="card case-card reveal"><div class="big">01</div><h3>Первые коммерческие сигналы</h3><p>Для MVP: подтверждённая боль, согласие на пилот, запрос условий, подключение ЛПР.</p></div>
+          <div class="card case-card reveal"><div class="big">02</div><h3>Лиды на согласованной стадии</h3><p>Nurture, MQL, SAL или SQL — в зависимости от зрелости sales-команды клиента.</p></div>
+          <div class="card case-card reveal"><div class="big">03</div><h3>Готовая система для передачи</h3><p>Материалы, база аккаунтов, скрипты, playbook, dashboard и лиды / сделки, которые можно продолжать вести внутри команды.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Частые вопросы</h2>
+          <p>Коротко о том, где заканчивается запуск системы и начинается регулярное сопровождение.</p>
+        </div>
+        <div class="faq">
+          <details class="reveal"><summary>Это лидогенерация или консалтинг?</summary><p>И то, и другое, но в правильной последовательности. Сначала собираем коммерческую основу и проверяем её в поле, затем можем вести регулярный pipeline.</p></details>
+          <details class="reveal"><summary>Почему нельзя сразу платить только за лиды?</summary><p>На ранних стадиях часто нет точного ICP, оффера, материалов и правил передачи. Если сразу гнать лиды, можно масштабировать хаос и получить ложные выводы.</p></details>
+          <details class="reveal"><summary>Что считается результатом первого этапа?</summary><p>Система продаж, набор материалов, база аккаунтов, запущенный outreach и первые лиды / пилоты / сделки на заранее согласованной стадии.</p></details>
+          <details class="reveal"><summary>Можно ли продолжить после запуска?</summary><p>Да. После Pipeline Launch можно перейти на Pipeline Management: monthly retainer + success fee за лидов, доведённых до нужной стадии.</p></details>
+          <details class="reveal"><summary>Подходит ли это зрелому отделу продаж?</summary><p>Да, но формат другой: короткий ABM setup, затем ежемесячное ведение account-based outreach и передача лидов в sales-команду.</p></details>
+          <details class="reveal"><summary>Какие данные нужны на старте?</summary><p>Описание продукта, текущие материалы, доступная CRM / история сделок, список целевых сегментов и контакт с фаундером, PO или коммерческой командой.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <div class="container cta-box reveal">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Стратегическая сессия</div>
+          <h2 style="margin-top:18px">Определим, какая модель MVP RUN подходит вашему этапу продаж</h2>
+          <p class="lead" style="font-size:20px;margin-top:20px">За 30 минут разберём вашу стадию, текущие материалы, доступные данные и точку передачи лида. На выходе — понятный формат запуска: Pipeline Launch, Sales Acceleration или ABM Growth.</p>
+          <div class="trust-row" style="margin-top:24px">
+            <span class="pill">✓ без лишней презентации</span>
+            <span class="pill">✓ сразу по вашей воронке</span>
+            <span class="pill">✓ понятный следующий шаг</span>
+          </div>
+        </div>
+        <form class="form" onsubmit="event.preventDefault(); alert('Заявка сохранена в демо-версии лендинга. Подключите форму к CRM или почте.');">
+          <input type="text" placeholder="Ваше имя" required />
+          <input type="email" placeholder="Рабочий email" required />
+          <input type="text" placeholder="Компания / сайт" />
+          <select required>
+            <option value="">Какая стадия ближе?</option>
+            <option>Pre-sales / MVP-стадия</option>
+            <option>Founder-led sales</option>
+            <option>Early sales team</option>
+            <option>Mature sales team</option>
+          </select>
+          <textarea placeholder="Коротко: что продаёте и какая задача по продажам сейчас?"></textarea>
+          <button class="btn btn-primary" type="submit">Запросить разбор →</button>
+          <p class="fine">Форма демонстрационная. Для запуска подключите обработчик формы, CRM, аналитику и политику обработки данных.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© MVP RUN · B2B sales launch & growth</div>
+      <div>Validation-led Sales · Pipeline Launch · Sales Acceleration · ABM Growth</div>
+    </div>
+  </footer>
+
+  <script>
+    const fmt = new Intl.NumberFormat('ru-RU');
+    const shortRub = (n) => {
+      if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace('.', ',') + ' млн ₽';
+      return fmt.format(n) + ' ₽';
+    };
+
+    const deal = document.getElementById('deal');
+    const leads = document.getElementById('leads');
+    const conv = document.getElementById('conv');
+    const updateCalc = () => {
+      const d = Number(deal.value), l = Number(leads.value), c = Number(conv.value) / 100;
+      document.getElementById('dealVal').textContent = fmt.format(d) + ' ₽';
+      document.getElementById('leadVal').textContent = l;
+      document.getElementById('convVal').textContent = Math.round(c * 100) + '%';
+      document.getElementById('pipelineRes').textContent = shortRub(d * l);
+      document.getElementById('revenueRes').textContent = shortRub(d * l * c);
+      document.getElementById('dealsRes').textContent = (l * c).toFixed(1).replace('.', ',');
+    };
+    [deal, leads, conv].forEach(el => el.addEventListener('input', updateCalc));
+    updateCalc();
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
